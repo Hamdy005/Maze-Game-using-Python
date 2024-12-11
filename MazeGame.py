@@ -57,12 +57,16 @@ class MazeGame:
                     x =""
                     if i == 0:
                         x = "|"
+                        #print("up")
                     elif i == 1:
                         x = "-"
+                        #print("left")
                     elif i == 2:
                         x = "|"
+                        #print("down")
                     elif i == 3:
                         x = "-"
+                        #print("right")
                     new_path = path + [(new_row, new_col,x)]
                     queue.append([new_path, new_row, new_col,x])
 
