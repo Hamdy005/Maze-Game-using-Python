@@ -2,7 +2,7 @@ class MazeGame:
   
     neighbour_rows = [-1, 0, 1, 0]
     neighbour_cols = [0, -1, 0, 1]
-  
+    path_grid = [[]]
     def __init__(self, maze):
     
         self.m = len(maze)
@@ -30,20 +30,22 @@ class MazeGame:
     
     def __bfs(self):
       
-        init_path = [(0, 0)]
+        init_path = [(0, 0,'s')]
         visited = [[False for j in range(self.n)] for i in range(self.m)]
-        queue = [[init_path, 0, 0]]
+        queue = [[init_path, 0, 0,'start']]
         
         while queue != []:
             
             curr_item = queue.pop(0)
             
             path = curr_item[0]
-            row, col = curr_item[1:]
+            row= curr_item[1]
+            col = curr_item[2]
             
             visited[row][col] = True
             
             if self.escaped(row, col):
+                self.path_grid=path
                 return path
                 
             for i in range(4):
@@ -52,9 +54,17 @@ class MazeGame:
                 new_col = col + MazeGame.neighbour_cols[i]
                
                 if self.is_valid(new_row, new_col) and self.maze[new_row][new_col] == ' ' and visited[new_row][new_col] == False:
-                    
-                    new_path = path + [(new_row, new_col)]
-                    queue.append([new_path, new_row, new_col])
+                    x =""
+                    if i == 0:
+                        x = "|"
+                    elif i == 1:
+                        x = "-"
+                    elif i == 2:
+                        x = "|"
+                    elif i == 3:
+                        x = "-"
+                    new_path = path + [(new_row, new_col,x)]
+                    queue.append([new_path, new_row, new_col,x])
 
     
                     
@@ -78,7 +88,11 @@ if __name__ == "__main__":
       
         print("The player can escape the maze") 
         print("Escape path is:", maze_game.get_escape_path())
-        maze_game.draw_escape_path()
-     
+
+        for i in maze_game.path_grid:
+            maze[i[0]][i[1]]=i[2]
+        for i in maze:
+            print(i)
+
     else:
         print("The player can't escape the maze")
